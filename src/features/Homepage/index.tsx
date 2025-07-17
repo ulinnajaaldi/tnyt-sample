@@ -20,6 +20,15 @@ const HomepageFeature: React.FC = () => {
     setValue(search);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setSearch(newValue);
+
+    if (newValue === "") {
+      setValue("");
+    }
+  };
+
   return (
     <main className="container mx-auto my-5 px-4">
       <section className="mb-10 flex flex-col gap-2 text-center">
@@ -36,7 +45,7 @@ const HomepageFeature: React.FC = () => {
       <section className="flex flex-col gap-5">
         <SearchBox
           search={search}
-          setSearch={setSearch}
+          handleSearchChange={handleSearchChange}
           queryArticle={queryArticle}
           handleSubmit={handleSubmit}
         />

@@ -1,20 +1,24 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import SearchBox from "../SearchBox";
 
-const mockProps = {
-  search: "",
-  setSearch: vi.fn(),
-  queryArticle: {
-    isLoading: false,
-    isError: false,
-    refetch: vi.fn(),
-  } as any,
-  handleSubmit: vi.fn(),
-};
-
 describe("SearchBox", () => {
+  let mockProps: any;
+
+  beforeEach(() => {
+    mockProps = {
+      search: "",
+      handleSearchChange: vi.fn(),
+      queryArticle: {
+        isLoading: false,
+        isError: false,
+        refetch: vi.fn(),
+      },
+      handleSubmit: vi.fn(),
+    };
+  });
+
   it("should render search input and button", () => {
     render(<SearchBox {...mockProps} />);
 
@@ -24,13 +28,13 @@ describe("SearchBox", () => {
     expect(screen.getByTestId("search-button")).toBeInTheDocument();
   });
 
-  it("should call setSearch when input value changes", () => {
+  it("should call handleSearchChange when input value changes", () => {
     render(<SearchBox {...mockProps} />);
 
     const input = screen.getByPlaceholderText("Search articles...");
     fireEvent.change(input, { target: { value: "test query" } });
 
-    expect(mockProps.setSearch).toHaveBeenCalledWith("test query");
+    expect(mockProps.handleSearchChange).toHaveBeenCalled();
   });
 
   it("should call handleSubmit when form is submitted", () => {

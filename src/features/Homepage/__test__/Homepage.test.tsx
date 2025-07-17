@@ -7,11 +7,16 @@ import { ArticleServices } from "@/services/Article";
 import HomepageFeature from "../index";
 
 vi.mock("../components", () => ({
-  SearchBox: ({ search, setSearch, handleSubmit, queryArticle }: any) => (
+  SearchBox: ({
+    search,
+    handleSearchChange,
+    handleSubmit,
+    queryArticle,
+  }: any) => (
     <form onSubmit={handleSubmit}>
       <input
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleSearchChange}
         placeholder="Search articles..."
         disabled={queryArticle?.isLoading || queryArticle?.isError}
       />
@@ -78,9 +83,16 @@ describe("HomepageFeature", () => {
     render(<HomepageFeature />, { wrapper: createWrapper() });
 
     const input = screen.getByPlaceholderText("Search articles...");
+
     fireEvent.change(input, { target: { value: "test search" } });
 
     expect(input).toHaveValue("test search");
+
+    fireEvent.change(input, { target: { value: "another search term" } });
+    expect(input).toHaveValue("another search term");
+
+    fireEvent.change(input, { target: { value: "" } });
+    expect(input).toHaveValue("");
   });
 
   it("should show loading skeletons when searching", async () => {

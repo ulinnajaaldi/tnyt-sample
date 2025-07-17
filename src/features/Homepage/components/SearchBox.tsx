@@ -9,13 +9,13 @@ import { useGetSearchArticle } from "@/useCases/Article";
 
 interface ISearchBox {
   search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   queryArticle: ReturnType<typeof useGetSearchArticle>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const SearchBox: React.FC<ISearchBox> = (props) => {
-  const { search, setSearch, queryArticle, handleSubmit } = props;
+  const { search, handleSearchChange, queryArticle, handleSubmit } = props;
 
   return (
     <form
@@ -28,7 +28,7 @@ const SearchBox: React.FC<ISearchBox> = (props) => {
         type="search"
         placeholder="Search articles..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleSearchChange}
         className="pe-10"
         disabled={queryArticle.isLoading || queryArticle.isError}
       />
